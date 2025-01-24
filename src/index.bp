@@ -19,7 +19,7 @@ navbar(padding: 0) {
 section(wide, centered, padding:40) {
     vertical(centered, wide) {
         title(huge, bold, color:#ffffff, marginTop: 60) { "Welcome to DaTTV Portfolio" }
-        card(subtle, large, color:#8b949e) { "A showcase of my projects and skills in web development and Minecraft modding." }
+        card(subtle, large, color:#8b949e) { "A showcase of my projects and skills." }
     }
 }
 
