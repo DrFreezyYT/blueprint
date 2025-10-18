@@ -5,8 +5,8 @@ page(favicon:"/favicon.ico") {
     author { "Freezy, DaTTV" }
 }
 
-navbar(padding: 0) {
-    horizontal(centered, spaced) {
+navbar() {
+    horizontal {
         link(href:index) { text(bold, uppercase) { "DaTTV" } }
         links {
             link (href:about) { button { "About Me" } }
@@ -23,7 +23,7 @@ section(wide, centered, padding:40) {
     }
 }
 
-section(wide, alternate, padding:40) {
+section(wide, padding:40) {
     title(large, bold, centered) { "About Me" }
     card(subtle, centered) {
         "I am a dedicated Minecraft and backend developer with a passion for creating innovative solutions and pushing the boundaries of what's possible in both gaming and software development."
@@ -76,7 +76,7 @@ section(wide, padding:40) {
     }
 }
 
-section(wide, alternate, padding:40, marginBottom:20) {
+section(wide, padding:40, marginBottom:20) {
     title(large, bold, centered, underline) { "Contact" }
     vertical(centered, gap:2) {
         text(color:white) { "Email: " link(href:"mailto:admin@freezy.me", color:#8b5cf6) { "admin@freezy.me" } }        

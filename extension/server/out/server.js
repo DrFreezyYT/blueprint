@@ -38,6 +38,10 @@ const elements = [
     'card', 'badge', 'alert', 'tooltip', 'input', 'textarea', 'select',
     'checkbox', 'radio', 'switch', 'list', 'table', 'progress', 'slider'
 ];
+// Script blocks
+const scriptBlocks = [
+    'client', 'server'
+];
 // Single instance elements
 const singleElements = ['page', 'navbar'];
 // Blueprint properties
@@ -52,6 +56,8 @@ const properties = [
 ];
 // Page configuration properties
 const pageProperties = ['title', 'description', 'keywords', 'author'];
+// ID attribute suggestion - using underscore format
+const idAttributeTemplate = 'id:$1_$2';
 // Container elements that can have children
 const containerElements = [
     'horizontal', 'vertical', 'section', 'grid', 'navbar',
@@ -85,6 +91,18 @@ connection.onCompletion((textDocumentPosition) => {
     const position = textDocumentPosition.position;
     const line = lines[position.line];
     const linePrefix = line.slice(0, position.character);
+    // Suggest script blocks after @ symbol
+    if (linePrefix.trim().endsWith('@')) {
+        return scriptBlocks.map(block => ({
+            label: `@${block}`,
+            kind: node_1.CompletionItemKind.Snippet,
+            insertText: `@${block} {\n    $1\n}`,
+            insertTextFormat: node_1.InsertTextFormat.Snippet,
+            documentation: block === 'client' ?
+                'Create a client-side JavaScript block that runs when the element is clicked. The "e" event object is available.' :
+                'Create a server-side JavaScript block that runs on the server.'
+        }));
+    }
     // Check if this is a template completion trigger
     if (linePrefix.trim() === '!') {
         return [{
@@ -114,13 +132,22 @@ connection.onCompletion((textDocumentPosition) => {
             documentation: `Add ${prop} to the page configuration`
         }));
     }
-    // After an opening parenthesis, suggest properties
+    // After an opening parenthesis, suggest properties including ID with underscore format
     if (linePrefix.trim().endsWith('(')) {
-        return properties.map(prop => ({
-            label: prop,
-            kind: node_1.CompletionItemKind.Property,
-            documentation: `Apply ${prop} property`
-        }));
+        return [
+            ...properties.map(prop => ({
+                label: prop,
+                kind: node_1.CompletionItemKind.Property,
+                documentation: `Apply ${prop} property`
+            })),
+            {
+                label: 'id',
+                kind: node_1.CompletionItemKind.Property,
+                insertText: idAttributeTemplate,
+                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                documentation: 'Add an ID to the element (use underscores instead of hyphens for JavaScript compatibility)'
+            }
+        ];
     }
     // After a container element's opening brace, suggest child elements
     const containerMatch = /\b(horizontal|vertical|section|grid|navbar|links|card)\s*{\s*$/.exec(linePrefix);
@@ -139,6 +166,25 @@ connection.onCompletion((textDocumentPosition) => {
                 suggestedElements = ['title', 'text', 'button', 'image'];
                 break;
         }
+        // Include client/server block suggestions for interactive elements
+        if (['button', 'button-light', 'button-secondary', 'button-compact'].includes(parentElement)) {
+            return [
+                ...suggestedElements.map(element => ({
+                    label: element,
+                    kind: node_1.CompletionItemKind.Class,
+                    insertText: `${element} {\n    $1\n}`,
+                    insertTextFormat: node_1.InsertTextFormat.Snippet,
+                    documentation: `Create a ${element} block inside ${parentElement}`
+                })),
+                {
+                    label: '@client',
+                    kind: node_1.CompletionItemKind.Snippet,
+                    insertText: `@client {\n    $1\n}`,
+                    insertTextFormat: node_1.InsertTextFormat.Snippet,
+                    documentation: 'Create a client-side JavaScript block that runs when the element is clicked. The "e" event object is available.'
+                }
+            ];
+        }
         return suggestedElements.map(element => ({
             label: element,
             kind: node_1.CompletionItemKind.Class,
@@ -146,6 +192,26 @@ connection.onCompletion((textDocumentPosition) => {
             insertTextFormat: node_1.InsertTextFormat.Snippet,
             documentation: `Create a ${element} block inside ${parentElement}`
         }));
+    }
+    // Inside interactive elements, suggest @client blocks
+    const interactiveElementMatch = /\b(button|button-light|button-secondary|button-compact|input|textarea|select|checkbox|radio|switch)\s*(?:\([^)]*\))?\s*{\s*$/.exec(linePrefix);
+    if (interactiveElementMatch) {
+        return [
+            {
+                label: '@client',
+                kind: node_1.CompletionItemKind.Snippet,
+                insertText: `@client {\n    $1\n}`,
+                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                documentation: 'Create a client-side JavaScript block that runs when the element is clicked. The "e" event object is available.'
+            },
+            {
+                label: 'text',
+                kind: node_1.CompletionItemKind.Class,
+                insertText: `"$1"`,
+                insertTextFormat: node_1.InsertTextFormat.Snippet,
+                documentation: 'Add text content to the element'
+            }
+        ];
     }
     // Get available single instance elements
     const availableSingleElements = singleElements.filter(element => !elementExists(text, element));

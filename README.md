@@ -19,8 +19,8 @@ npm run build  # Generates production files
 
 ## Roadmap 🛣️
 
-- [ ] Blueprint server blocks
-- [ ] Blueprint live editor
+- [x] Blueprint server blocks
+- [x] Blueprint live editor
 - [ ] Blueprint components
 
 ## Why Blueprint? ✨

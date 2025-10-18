@@ -1,77 +1,59 @@
 page(favicon:"/favicon.ico") {
     title { "Blueprint - Modern UI Framework" }
-    description { "A personal portfolio showcasing projects and skills." }    
+    description { "A modern, declarative UI framework for building beautiful web interfaces" }
     keywords { "blueprint, ui, framework, web development" }
     author { "Blueprint Team" }
 }
 
 navbar {
     horizontal {
-        link(href:index) { text(bold) { "DaTTV" } }
+        link(href:index) { text(bold) { "Blueprint" } }
         links {
-            button(@click="scrollTo('about')") { "About" }
-            button(@click="scrollTo('projects')") { "Projects" }
-            button(@click="scrollTo('contact')") { "Contact" }
+            link(href:index) { "Home" }
+            link(href:components) { "Components" }
+            link(href:about) { "About" }
+            link(href:contact) { "Contact" }
         }
     }
 }
 
 section(wide, centered) {
-    vertical(centered, wide) {
-        title(huge) { "Welcome to DaTTV Portfolio" }
-        text(subtle) { "A showcase of my projects and skills in web development and Minecraft modding." }
+    vertical(centered) {
+        title(huge) { "Build modern UIs with Blueprint" }
+        text(large, subtle) { "A declarative framework that compiles to clean HTML, CSS, and JavaScript" }
+
+        horizontal {
+            link(href:components) { button { "View Components" } }
+            link(href:about) { button-light { "Learn More" } }
+        }
     }
 }
 
 section(wide) {
     grid(columns:3) {
         card {
-            title { "Live Reloads" }
-            text { "Changes appear instantly in your browser with Tailwind CSS." }
-            link(href:"https://tailwindcss.com") { button-secondary { "Learn More" } }
+            title { "⚡ Live Development" }
+            text { "Instant hot reload keeps your browser in sync with every code change" }
         }
         card {
-            title { "Vue.js Integration" }
-            text { "Dynamic content powered by Vue.js." }
-            link(href:"https://vuejs.org") { button-secondary { "Learn More" } }
+            title { "🎨 Beautiful by Default" }
+            text { "Shadcn-inspired dark theme with polished components out of the box" }
         }
         card {
-            title { "Dark Mode Support" }
-            text { "Switch seamlessly between light and dark modes." }
-            link(href:"https://tailwindcss.com/docs/dark-mode") { button-secondary { "Learn More" } }
+            title { "📦 Zero Config" }
+            text { "Start building immediately with sensible defaults and intuitive syntax" }
         }
     }
 }
 
 section(wide, centered) {
-    title(large) { "About Me" }
-    text { "I am a dedicated Minecraft and backend developer with a passion for creating innovative solutions and pushing the boundaries of what's possible in both gaming and software development." }
-}
+    vertical(centered) {
+        title(large) { "Ready to get started?" }
+        text(subtle) { "Explore our component library and start building today" }
 
-section(wide) {
-    title(large) { "Projects" }
-    grid(columns:2) {
-        card {
-            title { "Portfolio" }
-            text { "An ongoing developed website showcasing my projects." }
-            link(href:"https://freezy.me") { button { "Visit Page" } }
-            link(href:"https://github.com/DrFreezyYT/portfolio") { button-secondary { "GitHub" } }
-        }
-        card {
-            title { "Minecraft Enchant Order" }
-            text { "A calculator for making the most efficient enchants in Minecraft!" }
-            link(href:"https://enchant.freezy.me/") { button { "Visit Page" } }
-            link(href:"https://github.com/DrFreezyYT/enchant-order.github.io") { button-secondary { "GitHub" } }
+        horizontal {
+            link(href:components) { button { "Browse Components" } }
+            link(href:contact) { button-secondary { "Get in Touch" } }
         }
     }
-}
-
-section(wide) {
-    title(large) { "Contact" }
-    text { "Email: admin@freezy.me" }
-    text { "Discord: dattv" }
-}
-
-footer {
-    text(centered) { "© 2019-{currentYear} DaTTV. All rights reserved." }
-}
+} 
